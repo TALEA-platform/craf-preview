@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="./talea-logo.svg" />
+    <title>Rifugi climatici all’aperto di Bologna · Anteprima</title>
+  </head>
+  <body>
+    <header class="barra">
+      <div class="barra-dentro">
+        <img class="logo" src="./talea-logo.svg" alt="" />
+        <div class="marchio">
+          <h1 id="titolo"></h1>
+          <div id="sottotitolo" class="sottotitolo"></div>
+        </div>
+        <div class="azioni">
+          <button id="info" class="bottone"></button>
+          <div id="lingue" class="chips" role="group"></div>
+        </div>
+      </div>
+    </header>
+    <nav id="schede" class="schede" role="tablist"></nav>
+    <main class="corpo">
+      <section id="pannello" class="pannello" aria-live="polite"></section>
+      <section class="carta-mappa">
+        <div id="mappa"></div>
+        <div id="basi" class="basi"></div>
+        <div id="passaggio" class="passaggio" hidden></div>
+        <div id="legenda" class="legenda"></div>
+      </section>
+    </main>
+    <div class="sotto"><section id="tabella" class="tabella" hidden></section></div>
+    <div id="benvenuto" class="velo" hidden></div>
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>

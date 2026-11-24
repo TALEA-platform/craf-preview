@@ -1,0 +1,55 @@
+# Costruisce la preview e la pubblica su GitHub Pages in /preview/ (la radice del sito rimanda lì).
+# In Settings → Pages della repository: Source = «GitHub Actions».
+name: Pubblica la preview
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  costruisci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Prepara il sito (preview in /preview/, radice che rimanda)
+        run: |
+          mkdir -p sito/preview
+          cp -r dist/. sito/preview/
+          cat > sito/index.html <<'EOF'
+          <!doctype html>
+          <meta charset="utf-8">
+          <meta http-equiv="refresh" content="0; url=./preview/">
+          <link rel="canonical" href="./preview/">
+          <title>Anteprima</title>
+          <a href="./preview/">Apri l'anteprima</a>
+          EOF
+          touch sito/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: sito
+
+  pubblica:
+    needs: costruisci
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.pagine.outputs.page_url }}preview/
+    steps:
+      - id: pagine
+        uses: actions/deploy-pages@v4
